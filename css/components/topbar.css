@@ -1,0 +1,139 @@
+/* ---------------------------------------------------------------------
+   Barre du haut : logo à gauche (lien vers l'accueil), navigation,
+   recherche à droite avec une loupe. Même place sur tous les écrans.
+   --------------------------------------------------------------------- */
+
+.topbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;            /* texte agrandi (200 %) : la recherche passe à la ligne au lieu de déborder */
+  align-items: center;
+  gap: var(--sp-3) var(--sp-5);
+  min-height: var(--topbar-h);
+  padding-block: calc(var(--sp-2) + env(safe-area-inset-top, 0px)) var(--sp-2);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+  background: var(--sky-deep);
+  color: var(--on-sky);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: none;
+  min-height: 44px;
+  color: var(--on-sky);
+  text-decoration: none;
+}
+
+.brand__mark {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: var(--accent-on-sky);
+  stroke-width: 1.6;
+}
+
+.brand__name {
+  font-family: var(--font-title);
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: var(--tracking-title);
+  white-space: nowrap;
+}
+
+.brand__name em {
+  color: var(--accent-on-sky);
+}
+
+.mainnav {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+.mainnav a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-pill);
+  color: var(--on-sky-soft);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mainnav a:hover {
+  color: var(--on-sky);
+  background: var(--glass);
+}
+
+.mainnav a[aria-current="page"] {
+  color: var(--on-accent-sky);
+  background: var(--accent-on-sky);
+}
+
+.topbar__search {
+  position: relative;
+  flex: 1 1 13.75rem;
+  max-width: 22em;            /* ≈ 360 px ; grandit avec le texte si le lecteur l'agrandit */
+  min-width: 0;
+  margin-left: auto;
+}
+
+/* Bouton soleil/lune (mode clair / sombre) : à droite de la recherche */
+.theme-switch {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 50%;
+  background: var(--glass);
+  color: var(--on-sky);
+  cursor: pointer;
+}
+
+.theme-switch:hover {
+  background: var(--glass-strong);
+  color: var(--accent-on-sky);
+}
+
+.theme-switch .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Téléphone : la navigation passe dans la barre d'onglets du bas */
+@media (max-width: 899px) {
+  .mainnav {
+    display: none;
+  }
+
+  /* Logo et bouton soleil/lune sur la première ligne, recherche pleine largeur dessous */
+  .theme-switch {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .topbar__search {
+    order: 2;
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .brand__name {
+    display: none;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1100px) {
+  .mainnav .icon {
+    display: none;
+  }
+}

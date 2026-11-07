@@ -1,0 +1,566 @@
+/* ---------------------------------------------------------------------
+   Page d'un pays, façon magazine de voyage :
+     • une grande bannière photo (plusieurs photos en fondu, angles droits), en retrait des bords,
+       avec le nom du pays en très grandes capitales ;
+     • une barre d'étapes en pilule, qui reste en haut de l'écran ;
+     • « Découvrir » en deux colonnes (texte + chiffres / cartes à icône) ;
+     • les autres chapitres dans de grands panneaux arrondis, titre à gauche,
+       courte présentation à droite.
+   Toutes les couleurs viennent des quatre palettes (tokens.css).
+   --------------------------------------------------------------------- */
+
+.page--country {
+  --hero-radius: 0;   /* les images ont des angles droits */
+  --panel-radius: 28px;
+}
+
+/* --- Bannière --- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  width: calc(100% - var(--gutter) - var(--gutter-r));
+  max-width: 1280px;
+  min-height: clamp(460px, 70vh, 680px);
+  margin: var(--sp-4) auto 0;
+  overflow: hidden;
+  border-radius: var(--hero-radius);
+  color: var(--on-photo);
+  /* En attendant la photo (ou sans photo) : la carte ancienne aux épingles, teintée
+     de la nuit à la terre, sous un voile sombre pour le texte */
+  background:
+    linear-gradient(180deg, rgb(10 16 36 / 0.35), rgb(10 16 36 / 0.85)),
+    linear-gradient(120deg, var(--nuit-800), var(--terre-700)),
+    url("../../img/fonds/epingles-carte-ancienne.jpg") 50% 50% / cover no-repeat;
+  background-blend-mode: normal, color, normal;
+  box-shadow: var(--shadow-card);
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/* Les photos du diaporama sont empilées ; seule la photo active est visible.
+   Fondu enchaîné, et un très léger recul (zoom de 6 % à 0) pendant qu'on la regarde. */
+.hero__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease);
+}
+
+.hero__media img.is-active {
+  opacity: 1;
+  animation: hero-drift 9s ease-out both;
+}
+
+@keyframes hero-drift {
+  from { scale: 1.06; }
+  to { scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__media img.is-active {
+    animation: none;
+  }
+}
+
+/* Voile : sombre en bas à gauche (sous le nom et les boutons) et en haut (fil d'Ariane),
+   la photo reste éclatante au centre et à droite */
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(10 16 36 / 0.45) 0%, transparent 22%, transparent 40%, rgb(10 16 36 / 0.78) 100%),
+    linear-gradient(90deg, rgb(10 16 36 / 0.45) 0%, transparent 60%);
+}
+
+.hero__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5);
+  padding: var(--sp-5) clamp(1.25rem, 3vw, 2.5rem) 0;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--on-photo);
+}
+
+.breadcrumb li + li::before {
+  content: "›";
+  margin-right: var(--sp-2);
+  color: var(--on-sky-soft);
+}
+
+.breadcrumb a {
+  color: var(--on-photo);
+}
+
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.hero__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 36px;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: rgb(10 16 36 / 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: var(--text-sm);
+}
+
+.hero__inner {
+  display: grid;
+  justify-items: start;
+  gap: var(--sp-4);
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem) clamp(3.5rem, 5vw, 4.5rem);   /* place pour le pied (points, crédit) */
+}
+
+/* Le nom du pays : en capitales très grasses, à la taille de la bannière.
+   --len (posé par CountryPage) = longueur du mot le plus long : plus le nom est long,
+   plus la lettre est petite, pour qu'il tienne sans déborder. */
+.hero__name {
+  min-width: 0;
+  font-family: var(--font-text);
+  font-size: clamp(2.4rem, min(14vw, calc(124vw / var(--len, 8))), 9.25rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  outline: none;
+  text-shadow: 0 4px 40px rgb(10 16 36 / 0.45);
+}
+
+/* Le code du pays en petit, au pied du nom (comme une extension de site) */
+.hero__title {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  max-width: 100%;
+}
+
+.hero__code {
+  flex: none;
+  margin-bottom: 0.35em;
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+}
+
+.hero__tagline {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  max-width: 40em;
+  font-size: var(--step-0);
+  line-height: 1.4;
+}
+
+.hero__flag {
+  width: 36px;
+  height: 27px;
+  flex: none;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgb(242 244 248 / 0.85);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* Pied de la bannière, à droite : pause et points du diaporama, puis le crédit de la photo */
+.hero__foot {
+  position: absolute;
+  right: clamp(1.25rem, 3vw, 2.5rem);
+  bottom: var(--sp-3);
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-1) var(--sp-4);
+  max-width: calc(100% - 2.5rem);
+}
+
+.hero__slides {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.hero__slides[hidden] {
+  display: none;
+}
+
+.hero__play {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1.5px solid var(--glass-line);
+  border-radius: 50%;
+  background: var(--veil);
+  color: var(--on-photo);
+}
+
+.hero__play:hover {
+  border-color: var(--on-photo);
+}
+
+.hero__play .icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.hero__dots {
+  display: flex;
+}
+
+/* Chaque point est un bouton de 24 px (cible confortable) ; le point visible est plus petit */
+.hero__dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.hero__dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--on-sky-soft);
+  box-shadow: 0 0 0 1px rgb(10 16 36 / 0.45);
+  transition: width var(--duration) var(--ease), background var(--duration) var(--ease);
+}
+
+.hero__dot:hover::before {
+  background: var(--on-photo);
+}
+
+.hero__dot[aria-current]::before {
+  width: 20px;
+  background: var(--accent-on-sky);
+}
+
+.hero__credit {
+  font-size: var(--text-xs);
+  color: var(--on-sky-soft);
+}
+
+.hero__credit a {
+  color: inherit;
+}
+
+/* --- Barre des étapes : une pilule centrée, collante --- */
+.country-nav {
+  position: sticky;
+  top: var(--sp-2);
+  z-index: 15;
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-5);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+  pointer-events: none;
+}
+
+.country-nav__list {
+  display: flex;
+  gap: var(--sp-1);
+  max-width: 100%;
+  margin: 0;
+  padding: 6px;
+  overflow-x: auto;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+
+.country-nav__list::-webkit-scrollbar {
+  display: none;
+}
+
+.country-nav button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  padding: 0 var(--sp-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+.country-nav button:hover {
+  color: var(--ink);
+  background: var(--c-soft);
+}
+
+.country-nav button[aria-current] {
+  color: var(--c-on-ink);
+  background: var(--c-ink);
+}
+
+.country-nav__index {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--line);
+  color: var(--ink);
+  font-size: var(--step--2);
+  font-variant-numeric: tabular-nums;
+}
+
+.country-nav button[aria-current] .country-nav__index {
+  background: var(--c-on-ink);
+  color: var(--c-ink);
+}
+
+/* --- Les étapes --- */
+.country__body {
+  display: grid;
+  gap: clamp(3.5rem, 7vw, 6rem);
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-block: clamp(2.5rem, 5vw, 4rem) var(--sp-8);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+}
+
+.group {
+  display: grid;
+  gap: var(--sp-6);
+  scroll-margin-top: 16px;   /* + les 72 px de scroll-padding-top de la page (base.css) */
+}
+
+/* En-tête d'étape : surtitre et titre à gauche, présentation à droite */
+.group__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--sp-1) var(--sp-7);
+}
+
+.group__index {
+  grid-column: 1;
+  font-size: var(--step--2);
+  font-weight: 600;
+  line-height: var(--leading-ui);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--c-ink);
+}
+
+.group__title {
+  grid-column: 1;
+  font-size: var(--step-4);
+}
+
+.group__intro {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  max-width: 28em;
+  justify-self: end;
+  font-size: var(--step-0);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* --- Les chapitres : de grands panneaux arrondis --- */
+.chapter {
+  display: grid;
+  gap: var(--sp-5);
+  min-width: 0;
+  padding: clamp(1.25rem, 3.2vw, 2.5rem);
+  border-radius: var(--panel-radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  scroll-margin-top: 16px;   /* + les 72 px de scroll-padding-top de la page (base.css) */
+}
+
+/* En-tête de chapitre : titre à gauche, une phrase de présentation à droite */
+.chapter__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-6);
+}
+
+.chapter__title {
+  font-size: var(--step-2);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.chapter__intro {
+  max-width: 26em;
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.chapter__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-4);
+  min-width: 0;
+}
+
+.chapter__lead {
+  max-width: var(--measure);
+  color: var(--ink-soft);
+}
+
+/* Sous-titre dans un chapitre ("Manger", "Le climat mois par mois…") */
+.chapter__subtitle {
+  margin-top: var(--sp-3);
+  font-family: var(--font-title);
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: var(--leading-title);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.chapter__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* --- Découvrir : deux colonnes, sans panneau ---
+   à gauche le texte et les chiffres, à droite les cartes à icône */
+.group--decouvrir {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: start;
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+.group--decouvrir > .group__head {
+  grid-column: 1 / -1;
+}
+
+.group--decouvrir > .chapter {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.group--decouvrir > .chapter--bienvenue > .chapter__body {
+  gap: var(--sp-5);
+}
+
+/* --- Tablette --- */
+@media (max-width: 900px) {
+  .group--decouvrir {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .group__head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .group__intro {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+}
+
+/* --- Téléphone --- */
+@media (max-width: 640px) {
+  .page--country {
+    --hero-radius: 0;
+    --panel-radius: 22px;
+  }
+
+  .hero {
+    width: calc(100% - 24px);
+    min-height: clamp(460px, 74vh, 600px);
+    margin-top: var(--sp-3);
+  }
+
+  .hero__top {
+    padding: var(--sp-4) var(--sp-4) 0;
+  }
+
+  .hero__inner {
+    padding: 0 var(--sp-4) 96px;
+  }
+
+  /* Téléphone : les points sur une ligne, le crédit en dessous */
+  .hero__foot {
+    right: var(--sp-4);
+    left: var(--sp-4);
+    max-width: none;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .hero__credit {
+    text-align: right;
+  }
+
+  .hero__actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .country-nav button {
+    gap: var(--sp-1);
+    padding: 0 var(--sp-3);
+  }
+
+  .country-nav__index {
+    display: none;
+  }
+}

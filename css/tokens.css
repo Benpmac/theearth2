@@ -1,0 +1,226 @@
+/* =====================================================================
+   tokens.css — les jetons de design
+   ---------------------------------------------------------------------
+   LES COULEURS : quatre palettes, utilisées telles quelles (valeurs hex
+   exactes), chacune avec un rôle — c'est ce qui garde l'ensemble cohérent.
+
+     Terre   #16171A #3A2525 #713A32 #A75B45 #D4A07A #F3E5D2
+             → le papier du carnet, le texte, et L'ACCENT (terre cuite, sable)
+     Océan   #081A23 #0E4D55 #147B78 #5FA69B #B8CEC6 #F0F0EA
+             → les cartes (surfaces), la pluie du climatogramme
+     Nuit    #0A1024 #1A2751 #344879 #7185A8 #B7C4D9 #F2F4F8
+             → le ciel : barre du haut, pied de page, voiles sur les photos
+     Pierre  #06141B #11212D #253745 #4A5C6A #9BA8AB #CCD0CF
+             → les textes secondaires, les filets, et le mode sombre
+
+   Méthode couleur-impact :
+   • 60 % de neutres (papier crème, surfaces blanc cassé ; ardoise en sombre),
+     30 % de structure (bleu nuit), 10 % d'accent (terre cuite) ;
+   • un seul accent par écran : brun terre sur fond clair, sable sur fond sombre ;
+   • contraste de température : un ciel froid (nuit, océan), une terre chaude ;
+   • les composants n'utilisent que des RÔLES (--paper, --ink, --c-ink…),
+     jamais une couleur brute : le mode sombre ne change que les rôles.
+   ===================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Les quatre palettes ------------------------------------------ */
+  --terre-950: #16171A;
+  --terre-800: #3A2525;
+  --terre-700: #713A32;
+  --terre-500: #A75B45;
+  --terre-300: #D4A07A;
+  --terre-100: #F3E5D2;
+
+  --ocean-950: #081A23;
+  --ocean-800: #0E4D55;
+  --ocean-600: #147B78;
+  --ocean-400: #5FA69B;
+  --ocean-200: #B8CEC6;
+  --ocean-50: #F0F0EA;
+
+  --nuit-950: #0A1024;
+  --nuit-800: #1A2751;
+  --nuit-600: #344879;
+  --nuit-400: #7185A8;
+  --nuit-200: #B7C4D9;
+  --nuit-50: #F2F4F8;
+
+  --pierre-950: #06141B;
+  --pierre-900: #11212D;
+  --pierre-700: #253745;
+  --pierre-500: #4A5C6A;
+  --pierre-300: #9BA8AB;
+  --pierre-200: #CCD0CF;
+
+  /* --- Rôles : le ciel (barre du haut, globe, onglets, voiles) ------ */
+  --sky-deep: var(--nuit-950);
+  --sky-mid: var(--nuit-800);
+  --sky-glow: var(--nuit-600);
+  --space: var(--nuit-950);                    /* fond du globe : le bleu nuit de l'espace */
+  --space-glow: rgb(26 39 81 / 0.8);           /* nuit-800 : lueur derrière la planète */
+  --space-nebula: rgb(52 72 121 / 0.14);       /* nuit-600 : nébuleuse à peine visible */
+  --star: var(--nuit-50);
+  --star-soft: var(--nuit-200);
+  --on-sky: var(--nuit-50);             /* 17,1:1 */
+  --on-sky-soft: var(--nuit-200);       /* 10,7:1 */
+  --accent-on-sky: var(--terre-300);    /* le sable : onglet actif, focus, chargement (8,2:1) */
+  --on-accent-sky: var(--terre-950);    /* texte posé sur le sable (7,8:1) */
+  --veil: rgb(10 16 36 / 0.55);         /* nuit-950 en voile, sous les textes sur photo */
+  --veil-strong: rgb(10 16 36 / 0.88);
+  --glass: rgb(242 244 248 / 0.08);     /* nuit-50 en transparence */
+  --glass-strong: rgb(242 244 248 / 0.16);
+  --glass-line: rgb(242 244 248 / 0.18);
+  --on-photo: var(--nuit-50);
+
+  /* --- Rôles : le papier (pages pays, destinations) — mode clair -- */
+  --paper: var(--terre-100);            /* le crème du carnet (60 %) */
+  --surface: var(--ocean-50);           /* les cartes, plus claires que la page */
+  --paper-deep: var(--terre-100);       /* petits blocs posés sur une carte */
+  --ink: var(--terre-950);              /* texte : 14,5:1 sur le papier, 15,7:1 sur les cartes */
+  --ink-soft: var(--pierre-500);        /* texte secondaire : 5,6:1 / 6,1:1 */
+  --ink-faint: var(--pierre-500);       /* sources et notes (APCA Lc 70) */
+  --line: var(--pierre-200);
+  --shadow-card: 0 1px 2px rgb(58 37 37 / 0.06), 0 8px 24px rgb(58 37 37 / 0.08);   /* ombres teintées terre-800 */
+  --shadow-float: 0 12px 40px rgb(10 16 36 / 0.45);
+
+  /* L'accent du carnet : la terre */
+  --c-accent: var(--terre-500);         /* décor : filets, bandes (≥ 3:1) */
+  --c-ink: var(--terre-700);            /* liens, titres d'étape, bouton principal : 7,2:1 */
+  --c-on-ink: var(--terre-100);         /* texte sur le bouton principal : 7,2:1 */
+  --c-soft: var(--terre-100);           /* fonds doux (étiquettes, mois conseillés) */
+  --c-second: var(--ocean-600);         /* la deuxième voix : villes sur la carte */
+  --c-ink-hover: var(--terre-800);      /* bouton principal survolé */
+
+  --focus: var(--c-ink);                /* anneau de focus : ≥ 3:1 sur le fond */
+
+  /* Couleurs qui portent une donnée (toujours doublées d'un mot ou d'une légende) */
+  --rain: var(--ocean-600);
+  --temp-max: var(--terre-500);
+  --temp-min: var(--nuit-600);
+  --warn: var(--terre-500);
+
+  /* Page pays : cartes à icône (« L'essentiel ») et chiffres dans des ronds */
+  --feature-bg: var(--pierre-500);      /* texte #F0F0EA : 6,1:1 */
+  --feature-ink: var(--ocean-50);
+  --feature-tile: var(--ocean-50);
+  --feature-icon: var(--pierre-700);
+  --stat-bg: var(--pierre-700);
+  --stat-icon: var(--ocean-50);
+
+  /* --- Typographie (méthode typographie-ui, voir le rapport de recherche) -----
+     Deux familles hébergées avec le site (css/polices.css) :
+       Inter pour lire et agir, Fraunces pour titrer.
+     Les familles de repli "… repli" sont Arial et Georgia mises à l'échelle :
+     la page ne saute pas quand les vraies polices arrivent.
+     Dans la pile des titres, Inter vient avant les polices génériques : elle
+     fournit les rares lettres absentes de Fraunces (ʻ hawaïen, ɛ, ɔ…). */
+  --font-text: "Inter", "Inter repli", Roboto, "Segoe UI", system-ui, sans-serif;
+  --font-title: "Fraunces", "Fraunces repli", "Inter", Georgia, serif;
+  --font-body: var(--font-text);       /* anciens noms, gardés pour Globe.js */
+  --font-display: var(--font-title);
+
+  /* Échelle fluide (méthode Utopia) : 17 px de corps sur un écran de 360 px
+     (rapport 1,2 entre les pas), jusqu'à 19 px sur 1 240 px (rapport 1,25).
+     En rem : le texte grandit si le lecteur agrandit la taille dans son navigateur. */
+  --step--2: 0.8125rem;                                            /* 13 px : surtitres, sources */
+  --step--1: clamp(0.8854rem, 0.859rem + 0.1174vw, 0.95rem);        /* 14 → 15 px : étiquettes, boutons */
+  --step-0: clamp(1.0625rem, 1.0114rem + 0.2273vw, 1.1875rem);      /* 17 → 19 px : CORPS DU TEXTE */
+  --step-1: clamp(1.275rem, 1.1893rem + 0.3807vw, 1.4844rem);       /* 20 → 24 px : chapô, titre 3 */
+  --step-2: clamp(1.53rem, 1.3969rem + 0.5918vw, 1.8555rem);        /* 24 → 30 px : titre de chapitre */
+  --step-3: clamp(1.836rem, 1.6383rem + 0.8788vw, 2.3193rem);       /* 29 → 37 px : titre de section */
+  --step-4: clamp(2.2032rem, 1.9185rem + 1.2654vw, 2.8992rem);      /* 35 → 46 px : titre d'étape, de page */
+  --step-5: clamp(2.6438rem, 2.2429rem + 1.782vw, 3.624rem);        /* 42 → 58 px : titre de bandeau */
+  --step-6: clamp(3.1726rem, 2.6173rem + 2.4679vw, 4.53rem);        /* 51 → 72 px : nom du pays */
+
+  /* Rôles : chaque texte du site prend l'un de ces rôles, jamais une taille au hasard */
+  --text-xs: var(--step--2);
+  --text-sm: var(--step--1);
+  --text-md: var(--step-0);
+  --text-lg: var(--step-1);
+  --text-xl: var(--step-2);
+  --text-2xl: var(--step-4);
+  --text-hero: var(--step-6);
+
+  --leading-tight: 1.1;      /* grands titres */
+  --leading-title: 1.25;     /* petits titres */
+  --leading-ui: 1.35;        /* étiquettes, boutons, légendes */
+  --leading-body: 1.5;       /* texte courant (1,6 sur grand écran, voir .prose) */
+
+  --weight-body: 400;        /* 380 en mode sombre : le clair sur foncé paraît plus gras */
+  --tracking-display: -0.02em;
+  --tracking-title: -0.01em;
+  --tracking-caps: 0.08em;   /* surtitres en capitales : on les espace */
+
+  --measure: 34em;           /* ≈ 68 signes par ligne en Inter : le confort de lecture */
+  --measure-lead: 30em;
+
+  /* --- Espacements : base 8 (et 4 pour les petits écarts) ----------- */
+  --sp-1: 0.25rem;   /* 4 */
+  --sp-2: 0.5rem;    /* 8 */
+  --sp-3: 0.75rem;   /* 12 */
+  --sp-4: 1rem;      /* 16 */
+  --sp-5: 1.5rem;    /* 24 */
+  --sp-6: 2rem;      /* 32 */
+  --sp-7: 3rem;      /* 48 */
+  --sp-8: 4rem;      /* 64 */
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* --- Dimensions --- */
+  --content: 1120px;
+  --topbar-h: 64px;
+  --tabbar-h: 64px;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration: 240ms;
+}
+
+/* ---------------------------------------------------------------------
+   Mode sombre — LE MODE PAR DÉFAUT. Il s'applique tant que <html> n'a pas
+   data-theme="light" (posé par le bouton soleil/lune, voir ThemeSwitch.js).
+   La palette Pierre prend le relais (fond ardoise, jamais
+   noir pur), le texte passe au blanc cassé #F0F0EA (jamais blanc pur),
+   l'accent devient le sable, les données prennent les tons moyens.
+   --------------------------------------------------------------------- */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root:not([data-theme="light"]) {
+  --paper: var(--pierre-950);
+  --surface: var(--pierre-900);
+  --paper-deep: var(--pierre-700);
+  --ink: var(--ocean-50);               /* 14,4:1 sur les cartes */
+  --ink-soft: var(--pierre-200);        /* 10,6:1 · APCA Lc 75 */
+  --ink-faint: var(--pierre-200);       /* les sources aussi (#9BA8AB n'atteint que Lc 52) */
+  --line: var(--pierre-700);
+  --shadow-card: 0 0 0 1px var(--pierre-700);
+
+  --c-accent: var(--terre-300);
+  --c-ink: var(--terre-300);            /* sable : 7,1:1 sur les cartes */
+  --c-on-ink: var(--terre-950);         /* 7,8:1 */
+  --c-soft: var(--terre-800);
+  --c-second: var(--ocean-400);
+  --c-ink-hover: var(--terre-100);
+
+  --rain: var(--ocean-400);
+  --temp-max: var(--terre-300);
+  --temp-min: var(--nuit-400);
+  --warn: var(--terre-300);
+
+  --feature-bg: var(--pierre-700);      /* texte #F0F0EA : 11,6:1 */
+  --feature-ink: var(--ocean-50);
+  --feature-tile: var(--ocean-50);
+  --feature-icon: var(--pierre-700);
+  --stat-bg: var(--pierre-700);
+  --stat-icon: var(--terre-300);
+
+  --weight-body: 380;
+}

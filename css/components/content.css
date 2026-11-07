@@ -1,0 +1,245 @@
+/* ---------------------------------------------------------------------
+   Briques de contenu réutilisées dans plusieurs chapitres et pages
+   --------------------------------------------------------------------- */
+
+/* Liste de définitions : étiquette au-dessus, valeur dessous */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: var(--sp-5) var(--sp-6);
+}
+
+.facts__item {
+  display: grid;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.facts__item--wide {
+  grid-column: 1 / -1;
+}
+
+.facts__label {
+  font-size: var(--step--2);
+  font-weight: 600;
+  line-height: var(--leading-ui);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.facts__value {
+  font-weight: 500;
+  line-height: var(--leading-title);
+  overflow-wrap: anywhere;
+}
+
+.facts__value .muted {
+  font-weight: 400;
+  font-size: var(--text-sm);
+}
+
+/* Texte long : lignes d'environ 68 signes au plus (34em en Inter), espace d'un
+   interligne entre paragraphes, interlignage plus ouvert sur grand écran */
+.prose {
+  display: grid;
+  gap: 1em;
+  max-width: var(--measure);
+}
+
+.prose p {
+  line-height: var(--leading-body);
+}
+
+@media (min-width: 48em) {
+  .prose p {
+    line-height: 1.6;
+  }
+}
+
+/* Sur téléphone, colonnes étroites : la césure évite les grands trous en bout de ligne */
+@media (max-width: 47.99em) {
+  .prose p {
+    hyphens: auto;
+    hyphenate-limit-chars: 6 3 3;
+  }
+}
+
+/* Chapô : le premier paragraphe, un cran plus grand, sur une mesure plus courte */
+.prose--lead p:first-child {
+  max-width: var(--measure-lead);
+  font-size: var(--step-1);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.prose:not(.is-open).prose--lead p:nth-child(n + 3) {
+  display: none;
+}
+
+.prose__subtitle {
+  margin-top: 0.5em;
+  font-size: var(--step-0);
+  font-weight: 600;
+  line-height: var(--leading-title);
+}
+
+.prose__list {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.prose__list li::marker {
+  color: var(--c-ink);
+}
+
+/* Deux colonnes qui passent en une sur petit écran */
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--sp-6);
+}
+
+/* Accordéons (divulgation progressive) */
+.accordions {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.accordion {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-height: 52px;
+  padding: var(--sp-3) var(--sp-4);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion__summary::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-right: 2px solid var(--c-ink);
+  border-bottom: 2px solid var(--c-ink);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--duration) var(--ease);
+}
+
+.accordion[open] .accordion__summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+
+.accordion__content {
+  padding: 0 var(--sp-4) var(--sp-4);
+}
+
+/* Tuiles d'infos pratiques */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: var(--sp-3);
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  gap: 2px var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius);
+  background: var(--c-soft);
+}
+
+.tile__icon {
+  grid-row: span 3;
+  width: 28px;
+  height: 28px;
+  color: var(--c-ink);
+}
+
+.tile__label {
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: var(--leading-ui);
+  color: var(--ink-soft);
+}
+
+.tile__value {
+  font-weight: 600;
+  line-height: var(--leading-title);
+  font-variant-numeric: tabular-nums lining-nums;
+  overflow-wrap: anywhere;
+}
+
+.tile__note {
+  font-size: var(--step--1);
+  line-height: var(--leading-ui);
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums lining-nums;
+  overflow-wrap: anywhere;
+}
+
+/* Filtres (boutons bascule) */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--sp-4);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.filter:hover {
+  border-color: var(--c-ink);
+}
+
+/* Filtre actif : bouton bascule (aria-pressed) ou lien vers le filtre en cours (aria-current) */
+.filter[aria-pressed="true"],
+.filter[aria-current="true"] {
+  border-color: var(--c-ink);
+  background: var(--c-ink);
+  color: var(--c-on-ink);
+}
+
+/* En-tête des pages "papier" */
+.page-head {
+  display: grid;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+}
+
+.page-title {
+  font-size: var(--step-4);
+}
+
+.page-lead {
+  color: var(--ink-soft);
+  max-width: 60ch;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "theearth-outils",
+  "private": true,
+  "description": "Prépare les fichiers du dossier data/ (pays, couleurs, villes, contours, jours fériés).",
+  "scripts": {
+    "build": "node build-data.js ../data"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "2.6.2",
+    "all-the-cities": "3.1.0",
+    "date-holidays": "3.38.0",
+    "flag-icons": "7.6.0",
+    "world-atlas": "2.0.2",
+    "world-countries": "5.1.0"
+  }
+}

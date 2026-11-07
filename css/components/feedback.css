@@ -1,0 +1,92 @@
+/* ---------------------------------------------------------------------
+   États : chargement (squelette), message, erreur, page introuvable
+   --------------------------------------------------------------------- */
+
+.skeleton {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.skeleton span {
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(90deg, var(--line) 0%, var(--paper) 50%, var(--line) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+
+.skeleton span:nth-child(2) { width: 85%; }
+.skeleton span:nth-child(3) { width: 60%; }
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius);
+  background: var(--paper);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.notice p {
+  flex: 1 1 240px;
+}
+
+.notice--error {
+  border-left: 4px solid var(--warn);
+}
+
+.page-message {
+  display: grid;
+  justify-items: start;
+  gap: var(--sp-4);
+  max-width: 640px;
+  margin: var(--sp-8) auto;
+  padding-inline: var(--gutter);
+}
+
+.page-message h1 {
+  font-size: var(--text-2xl);
+}
+
+/* Écran de chargement */
+.loader {
+  display: none;
+  min-height: 50vh;
+  place-content: center;
+  justify-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.is-loading .loader { display: grid; }
+
+.loader__ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  border-top-color: var(--c-ink);
+  animation: spin 900ms linear infinite;
+}
+
+.loader.is-error .loader__ring { display: none; }
+
+.loader__text {
+  max-width: 46ch;
+}
+
+.loader.is-error .loader__text {
+  color: var(--ink);
+  font-size: var(--text-md);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

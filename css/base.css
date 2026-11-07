@@ -1,0 +1,181 @@
+/* =====================================================================
+   base.css — reset léger et typographie
+   ===================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 72px;   /* les ancres ne passent pas sous la barre des étapes */
+  /* La page s'arrête net en haut et en bas : pas de « rebond » qui laisse voir une bande vide
+     au-dessus de la barre du haut (pavés tactiles sous Windows et macOS, téléphones) */
+  overscroll-behavior-y: none;
+  /* Si un navigateur rebondit quand même, la bande qui apparaît a la couleur de la barre du haut */
+  background: var(--sky-deep);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;              /* jamais de faux gras ni de fausse italique */
+  font-variant-numeric: lining-nums; /* chiffres alignés sur les capitales */
+  text-rendering: optimizeLegibility;
+}
+
+/* Lissage "antialiased" (macOS seulement) : il affine le texte clair sur fond sombre,
+   et seulement là ; sur fond clair il rendrait le texte trop maigre */
+.topbar,
+.tabbar,
+.hero,
+.page-hero,
+.site-footer,
+.chapter--nature {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root:not([data-theme="light"]) body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure, dl, dd, blockquote {
+  margin: 0;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+/* Titres : Fraunces. Plus le titre est grand, plus il est fin et serré
+   (la taille optique de Fraunces s'en charge, et l'approche se resserre) ;
+   plus il est petit, plus il est gras. */
+h1, h2, h3 {
+  font-family: var(--font-title);
+  font-weight: 500;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-title);
+  font-optical-sizing: auto;
+  text-wrap: balance;               /* lignes de longueur égale, pas de mot orphelin */
+  hyphens: manual;
+}
+
+/* Paragraphes : pas de mot seul sur la dernière ligne (navigateurs qui le savent) */
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+/* Petites capitales d'étiquette : saisies en casse normale, transformées ici (accents gardés) */
+.overline {
+  font-size: var(--step--2);
+  font-weight: 600;
+  line-height: var(--leading-ui);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+img,
+svg,
+canvas,
+video,
+audio {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--c-ink);
+  text-underline-offset: 3px;
+}
+
+/* Anneau de focus : brun Terre sur le papier, sable Terre sur la nuit (≥ 3:1 dans les deux cas) */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.topbar,
+.tabbar,
+.hero,
+.site-footer {
+  --focus: var(--accent-on-sky);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--sp-4);
+  top: -100px;
+  z-index: 100;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  top: var(--sp-4);
+}
+
+main:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

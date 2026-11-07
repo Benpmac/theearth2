@@ -1,0 +1,29 @@
+/* =====================================================================
+   layout.css — la charpente commune à tous les écrans
+   ---------------------------------------------------------------------
+   barre du haut  ·  <main> avec un seul écran visible  ·  barre d'onglets
+   (téléphone)
+   ===================================================================== */
+
+.page {
+  min-width: 0;
+}
+
+/* Conteneur centré des pages "papier" (destinations, ton avis) */
+.page--destinations,
+.page--feedback {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-block: var(--sp-6) var(--sp-8);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+}
+
+/* Téléphone : barre d'onglets en bas, on laisse la place */
+@media (max-width: 899px) {
+  body {
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+  }
+
+}

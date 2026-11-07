@@ -1,0 +1,175 @@
+/* ---------------------------------------------------------------------
+   Toutes les destinations : continents, puis cartes "drapeau + nom"
+   Le drapeau (SVG) reste net à toutes les tailles.
+   --------------------------------------------------------------------- */
+
+/* Bandeau photo, voilé de bleu nuit à gauche pour le texte.
+   Une image par continent (img/continents/), cadrée sur son sujet ;
+   « Tous », l'Europe et l'Antarctique gardent les épingles sur la carte du monde. */
+.page-hero {
+  --hero-img: url("../../img/fonds/epingles-reseau.jpg");
+  --hero-pos: 70% 55%;
+  --hero-pos-mobile: 50% 40%;
+  display: grid;
+  align-content: end;
+  gap: var(--sp-2);
+  min-height: clamp(220px, 28vw, 320px);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-6);
+  overflow: hidden;
+  color: var(--on-photo);
+  background:
+    linear-gradient(90deg, rgb(10 16 36 / 0.92) 0%, rgb(10 16 36 / 0.7) 45%, rgb(10 16 36 / 0.15) 100%),
+    var(--hero-img) var(--hero-pos) / var(--hero-size, cover) no-repeat,
+    var(--sky-mid);
+  box-shadow: var(--shadow-card);
+}
+
+/* Photo en hauteur : sur grand écran, on pose la carte entière à droite (au lieu de
+   zoomer dessus) ; son bord gauche est fondu dans le bleu nuit du bandeau (#1A2751,
+   directement dans l'image afrique-bandeau.jpg). Sur téléphone, la photo complète. */
+.page-hero[data-region="afrique"] {
+  --hero-img: url("../../img/continents/afrique-bandeau.jpg");
+  --hero-size: auto 100%;
+  --hero-pos: 100% 50%;
+  --hero-img-mobile: url("../../img/continents/afrique.jpg");   /* carte de l'Afrique en pierre */
+  --hero-pos-mobile: 50% 35%;
+}
+
+.page-hero[data-region="ameriques"] {
+  --hero-img: url("../../img/continents/ameriques.jpg"); /* Monument Valley, États-Unis */
+  --hero-pos: 50% 43%;
+  --hero-pos-mobile: 60% 45%;
+}
+
+.page-hero[data-region="asie"] {
+  --hero-img: url("../../img/continents/asie.jpg");      /* la Grande Muraille, Chine */
+  --hero-pos: 50% 28%;
+  --hero-pos-mobile: 60% 40%;
+}
+
+.page-hero[data-region="oceanie"] {
+  --hero-img: url("../../img/continents/oceanie.jpg");   /* Sydney au coucher du soleil */
+  --hero-pos: 50% 60%;
+  --hero-pos-mobile: 45% 60%;
+}
+
+.page-hero__eyebrow {
+  font-size: var(--step--2);
+  font-weight: 600;
+  line-height: var(--leading-ui);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--accent-on-sky);
+}
+
+.page-hero__title {
+  max-width: 14em;
+  font-size: var(--step-5);
+  letter-spacing: var(--tracking-display);
+}
+
+.page-hero__lead {
+  max-width: var(--measure-lead);
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--on-photo);
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  .page-hero {
+    padding: var(--sp-5);
+    background:
+      linear-gradient(180deg, rgb(10 16 36 / 0.35) 0%, rgb(10 16 36 / 0.92) 75%),
+      var(--hero-img-mobile, var(--hero-img)) var(--hero-pos-mobile) / cover no-repeat,
+      var(--sky-mid);
+  }
+}
+
+.filters--regions {
+  margin-bottom: var(--sp-7);
+}
+
+.destinations {
+  display: grid;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-7);
+  scroll-margin-top: var(--sp-5);
+}
+
+.destinations__title {
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--step-3);
+}
+
+.destinations__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: var(--sp-3);
+}
+
+.destination {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 64px;
+  padding: var(--sp-3);
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+/* Un filet terre cuite apparaît au survol : l'accent reste rare */
+.destination::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--c-accent);
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.destination:hover {
+  transform: translateY(-2px);
+}
+
+.destination:hover::before,
+.destination:focus-visible::before {
+  opacity: 1;
+}
+
+.destination__flag {
+  width: 48px;
+  height: 36px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.destination__text {
+  display: grid;
+  min-width: 0;
+}
+
+.destination__name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.destination__meta {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

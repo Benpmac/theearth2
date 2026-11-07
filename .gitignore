@@ -1,0 +1,8 @@
+# Fichiers à ne pas envoyer sur GitHub
+node_modules/
+outils/node_modules/
+outils/package-lock.json
+.DS_Store
+Thumbs.db
+.vscode/
+*.log

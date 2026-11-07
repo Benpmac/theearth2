@@ -1,0 +1,475 @@
+/* ---------------------------------------------------------------------
+   Styles propres à certains chapitres
+   --------------------------------------------------------------------- */
+
+/* Découvrir : trois chiffres dans des ronds */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-5);
+  margin-top: var(--sp-3);
+  padding: 0;
+  list-style: none;
+}
+
+.stat {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-1);
+  text-align: center;
+}
+
+.stat__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--sp-2);
+  border-radius: 50%;
+  background: var(--stat-bg);
+  color: var(--stat-icon);
+}
+
+.stat__icon .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.stat__value {
+  font-size: var(--step-2);
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.stat__label {
+  max-width: 12em;
+  font-size: var(--step--1);
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+/* Découvrir : les points clés en cartes à icône, empilées */
+.features {
+  display: grid;
+  gap: var(--sp-4);
+  padding: 0;
+  list-style: none;
+}
+
+.feature {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: 20px;
+  background: var(--feature-bg);
+  color: var(--feature-ink);
+}
+
+.feature__icon {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 16px;
+  background: var(--feature-tile);
+  color: var(--feature-icon);
+}
+
+.feature__icon .icon {
+  width: 40px;
+  height: 40px;
+  stroke-width: 1.6;
+}
+
+.feature__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.feature__label {
+  font-size: var(--step--1);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.feature__value {
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.feature__note {
+  margin-top: var(--sp-1);
+  font-size: var(--step--1);
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .stats {
+    gap: var(--sp-3);
+  }
+
+  .stat__value {
+    font-size: var(--step-1);
+  }
+
+  .feature {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: var(--sp-3);
+  }
+
+  .feature__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+  }
+
+  .feature__icon .icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Quand partir */
+.best-months {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius);
+  background: var(--c-soft);
+  font-size: var(--text-lg);
+  line-height: 1.4;
+}
+
+.best-months__icon {
+  width: 28px;
+  height: 28px;
+  margin-top: 2px;
+  color: var(--c-ink);
+}
+
+.weather-now {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.weather-now__icon {
+  width: 64px;
+  height: 64px;
+  color: var(--c-ink);
+  stroke-width: 1.4;
+}
+
+/* Chiffre clé : Inter, chiffres tabulaires (la température change sans faire bouger la ligne) */
+.weather-now__temp {
+  font-size: var(--step-5);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.weather-now__label {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+/* Fêtes et jours fériés */
+.holidays {
+  display: grid;
+}
+
+.holidays__item {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--sp-1) var(--sp-4);
+  padding-block: var(--sp-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.holidays__date {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.holidays__name {
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .holidays__item {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .holidays__date {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Les flèches ‹ › de la faune et de la flore */
+.rail__arrows {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+/* --- Faune et flore : des fiches en éventail sur une carte ancienne --- */
+.chapter--nature {
+  /* Panneau toujours sombre (clair comme sombre) : on y redéfinit les rôles de couleur */
+  --ink: var(--on-photo);
+  --ink-soft: var(--nuit-200);
+  --ink-faint: var(--nuit-200);
+  --line: var(--glass-line);
+  --focus: var(--accent-on-sky);
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgb(10 16 36 / 0.78), rgb(10 16 36 / 0.9)),
+    url("../../img/fonds/epingles-carte-ancienne.jpg") 50% 50% / cover no-repeat,
+    var(--nuit-950);
+  overflow: hidden;
+}
+
+.filters--dark .filter {
+  border-color: var(--glass-line);
+  background: var(--glass);
+  color: var(--on-photo);
+}
+
+.filters--dark .filter:hover {
+  border-color: var(--on-photo);
+}
+
+.filters--dark .filter[aria-pressed="true"] {
+  border-color: var(--accent-on-sky);
+  background: var(--accent-on-sky);
+  color: var(--on-accent-sky);
+}
+
+/* La piste : chaque fiche s'arrête au centre ; les marges intérieures laissent la
+   première et la dernière fiche venir au milieu */
+.flora {
+  min-width: 0;   /* sinon la piste prend la largeur de toutes les fiches et le centre se décale */
+  margin-inline: calc(-1 * clamp(1.25rem, 3.2vw, 2.5rem));
+}
+
+.flora__track {
+  --card: min(300px, 76vw);
+  position: relative;   /* les positions des fiches (offsetLeft) se mesurent depuis la piste */
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: var(--sp-5) calc(50% - var(--card) / 2) var(--sp-6);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.flora__track::-webkit-scrollbar {
+  display: none;
+}
+
+.flora__footer {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5);
+}
+
+.flora__footer .source {
+  flex: 1 1 22rem;
+}
+
+/* Une fiche : les fiches voisines se glissent un peu sous celle du milieu */
+.species-card {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 var(--card);
+  margin-inline: -14px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--ocean-50);
+  color: var(--terre-950);
+  box-shadow: 0 18px 50px rgb(6 20 27 / 0.5);
+  scroll-snap-align: center;
+  transform: scale(0.8);
+  cursor: pointer;
+  transition: transform 380ms var(--ease);
+}
+
+/* Les fiches qui reculent passent sous un voile bleu nuit (une couleur de la palette,
+   en transparence) : la fiche du milieu reste la plus claire */
+.species-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(10 16 36 / 0.3);
+  pointer-events: none;
+  transition: opacity 380ms var(--ease);
+}
+
+.species-card.is-near {
+  z-index: 2;
+  transform: scale(0.88);
+}
+
+.species-card.is-near::after {
+  opacity: 0.4;
+}
+
+.species-card.is-active {
+  z-index: 3;
+  transform: none;
+  cursor: default;
+}
+
+.species-card.is-active::after {
+  opacity: 0;
+}
+
+.species-card__photo {
+  padding: 10px 10px 0;
+}
+
+.species-card__photo img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--pierre-200);
+}
+
+.species-card__body {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+}
+
+.species-card__name {
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.species-card__latin {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -2px;
+  font-size: var(--step--1);
+  color: var(--pierre-500);
+}
+
+.species-card__latin .icon {
+  width: 1em;
+  height: 1em;
+  color: var(--terre-950);
+}
+
+.species-card__label {
+  margin-top: var(--sp-1);
+  font-size: var(--step--1);
+  font-weight: 700;
+}
+
+.species-card__desc {
+  margin-top: -4px;
+  font-size: var(--step--2);
+  line-height: 1.45;
+  color: var(--pierre-500);
+}
+
+/* Trois chiffres côte à côte, comme « distance · température · note » */
+.species-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-2);
+  margin: var(--sp-1) 0 0;
+  text-align: center;
+}
+
+.species-card__stats dt {
+  font-size: var(--step--2);
+  font-weight: 600;
+  color: var(--terre-950);
+}
+
+/* 19 px en gras = « grand texte » au sens du WCAG : le sarcelle #147B78 (4,4:1) y est lisible */
+.species-card__stats dd {
+  margin: 2px 0 0;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ocean-600);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.species-card__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+.species-card__foot .species-card__label {
+  margin: 0;
+  font-weight: 500;
+  color: var(--pierre-500);
+}
+
+.species-card__big {
+  font-size: var(--step-1);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.species-card__go {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--terre-950);
+  color: var(--ocean-50);
+  transition: transform var(--duration) var(--ease);
+}
+
+.species-card__go:hover {
+  transform: scale(1.06);
+}
+
+.species-card__go .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.species-card__go:focus-visible {
+  outline: 3px solid var(--accent-on-sky);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .species-card,
+  .species-card::after {
+    transition: none;
+  }
+}

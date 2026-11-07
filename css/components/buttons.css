@@ -1,0 +1,205 @@
+/* ---------------------------------------------------------------------
+   Boutons, puces, étiquettes (convention BEM : .bloc__element--variante)
+   Une seule action principale par écran : .btn--primary
+   --------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 44px;              /* cible tactile confortable */
+  padding: var(--sp-2) var(--sp-5);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Action principale : couleur pleine, une seule à la fois */
+.btn--primary {
+  background: var(--c-ink);
+  color: var(--c-on-ink);
+}
+
+/* Survol : le cran voisin de la même palette (terre-800 en clair, terre-100 en sombre) */
+.btn--primary:hover {
+  background: var(--c-ink-hover);
+}
+
+/* Sur une photo : bouton plein clair (action principale) et bouton contour clair */
+.btn--light {
+  background: var(--on-photo);
+  color: var(--terre-950);
+}
+
+.btn--light:hover {
+  background: var(--terre-100);
+}
+
+.btn--outline-light {
+  border-color: var(--on-photo);
+  color: var(--on-photo);
+}
+
+.btn--outline-light:hover {
+  background: var(--glass-strong);
+}
+
+/* Boutons ronds ‹ › des rangées qui défilent */
+.round-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  padding: 0;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  transition: border-color var(--duration) var(--ease), opacity var(--duration) var(--ease);
+}
+
+.round-btn:hover:not(:disabled) {
+  border-color: var(--c-ink);
+  color: var(--c-ink);
+}
+
+.round-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.round-btn--next .icon {
+  transform: scaleX(-1);
+}
+
+/* Sur fond sombre (carte ancienne de « Faune et flore ») */
+.round-btn--light {
+  border-color: var(--glass-line);
+  background: var(--glass);
+  color: var(--on-photo);
+}
+
+.round-btn--light:hover:not(:disabled) {
+  border-color: var(--on-photo);
+  color: var(--on-photo);
+}
+
+/* Actions secondaires */
+.btn--outline {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.btn--outline:hover {
+  border-color: var(--c-ink);
+  color: var(--c-ink);
+}
+
+/* Bouton discret : texte seul, pour les actions tertiaires */
+.btn--ghost {
+  color: var(--c-ink);
+}
+
+.btn--ghost:hover {
+  background: var(--c-soft);
+}
+
+.btn--glass {
+  color: var(--on-photo);
+  background: var(--glass);
+  border-color: var(--glass-line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn--glass:hover {
+  background: var(--glass-strong);
+}
+
+.btn--small {
+  min-height: 36px;
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--text-xs);
+}
+
+.btn--small.btn--outline {
+  color: var(--c-ink);
+}
+
+.btn--large {
+  min-height: 52px;
+  padding-inline: var(--sp-6);
+  font-size: var(--text-md);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+}
+
+.icon-btn:hover {
+  background: var(--glass-strong);
+}
+
+/* Puces : voisins, organisations… */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 36px;
+  padding: var(--sp-1) var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+a.chip:hover {
+  border-color: var(--c-ink);
+  color: var(--c-ink);
+}
+
+.chip img {
+  width: 20px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 1px var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--c-soft);
+  color: var(--c-ink);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}

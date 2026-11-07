@@ -1,0 +1,53 @@
+/* ---------------------------------------------------------------------
+   Barre d'onglets du bas (téléphone) : Destinations · Rechercher · Au hasard · Ton avis
+   --------------------------------------------------------------------- */
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  border-top: 1px solid var(--glass);
+  background: var(--sky-deep);
+}
+
+.tabbar a,
+.tabbar button {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  color: var(--on-sky-soft);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tabbar button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+}
+
+.tabbar .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tabbar a[aria-current="page"] {
+  color: var(--accent-on-sky);
+}
+
+@media (min-width: 900px) {
+  .tabbar {
+    display: none;
+  }
+}

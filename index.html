@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>TheEarth</title>
+  <meta name="description" content="Visitez un pays depuis votre canapé : un globe interactif et une page complète pour chaque pays du monde.">
+  <meta name="theme-color" content="#0A1024">
+  <meta name="color-scheme" content="dark">
+  <!-- Mode sombre par défaut ; mode clair seulement si la personne l'a choisi (bouton soleil/lune).
+       Appliqué ici, avant les styles, pour qu'aucune page ne s'affiche d'abord dans le mauvais mode. -->
+  <script>
+    try {
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.dataset.theme = "light";
+        document.querySelector('meta[name="color-scheme"]').content = "light";
+      }
+    } catch (e) { /* stockage indisponible : on reste en sombre */ }
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230A1024'/%3E%3Cpath d='M9 13c3-4 7-3 9 0s5 2 6-1M8 20c3 2 6 1 8-1s6-2 8 1' stroke='%23D4A07A' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Polices hébergées avec le site (voir css/polices.css). Un seul préchargement :
+       le texte courant en Inter. crossorigin est obligatoire, même sur le même domaine,
+       sinon le fichier serait téléchargé deux fois. -->
+  <link rel="preload" href="polices/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/polices.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script type="module" src="js/main.js"></script>
+</head>
+
+<body class="is-loading" data-screen="destinations">
+  <!-- Bibliothèque d'icônes : chaque <symbol> est réutilisé avec <use href="#i-…"> -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+    <symbol id="i-partly" viewBox="0 0 24 24"><circle cx="8.5" cy="8.5" r="3.5"/><path d="M8.5 2v1.5M2 8.5h1.5M3.9 3.9l1 1M13.1 3.9l-1 1"/><path d="M8 20h9.5a3.5 3.5 0 0 0 .4-7 5 5 0 0 0-9.6 1A3 3 0 0 0 8 20z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 19h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.6 1.5A3.3 3.3 0 0 0 7 19z"/></symbol>
+    <symbol id="i-fog" viewBox="0 0 24 24"><path d="M7 13h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.6 1.5A3.3 3.3 0 0 0 7 13zM4 17h16M6 21h12"/></symbol>
+    <symbol id="i-rain" viewBox="0 0 24 24"><path d="M7 15h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.6 1.5A3.3 3.3 0 0 0 7 15zM8 18l-1 3M12 18l-1 3M16 18l-1 3"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M7 15h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.6 1.5A3.3 3.3 0 0 0 7 15z"/><circle cx="8" cy="19" r=".9"/><circle cx="12" cy="21" r=".9"/><circle cx="16" cy="19" r=".9"/></symbol>
+    <symbol id="i-storm" viewBox="0 0 24 24"><path d="M7 15h10.5a4 4 0 0 0 .5-8 6 6 0 0 0-11.6 1.5A3.3 3.3 0 0 0 7 15zM12.5 15l-2 3.5h3l-2 3.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.1"/><circle cx="15" cy="15" r="1.1"/><circle cx="15" cy="9" r="1.1"/><circle cx="9" cy="15" r="1.1"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 7h11M9 12h11M9 17h11"/><circle cx="4.5" cy="7" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="17" r="1"/></symbol>
+    <symbol id="i-go" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+    <symbol id="i-area" viewBox="0 0 24 24"><path d="M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4zM9 4v14M15 6v14"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5h16v10H10l-4.5 3.5v-3.5H4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+    <symbol id="i-mountain" viewBox="0 0 24 24"><path d="M2.5 19.5l7-12 4 6.5 2.5-3.5 5.5 9z"/><path d="M7.6 10.8l1.9 1.4 1.6-1.6"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8.5 5.5-14 14.5-14 0 9-5.5 14.5-14.5 14z"/><path d="M5 19l7.5-7.5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.4 3-5.5 6-5.5s5.4 2.1 6 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.4.3 4 2 4.5 5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6.5 8h11v3a5.5 5.5 0 0 1-11 0zM12 16.5V21"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16v-3.5L6 7.5h12l2 5V16zM4 16v2.5h2.5V16M17.5 16v2.5H20V16M4 12.5h16"/><circle cx="7.5" cy="14.2" r=".6"/><circle cx="16.5" cy="14.2" r=".6"/></symbol>
+    <symbol id="i-siren" viewBox="0 0 24 24"><path d="M6 18v-5a6 6 0 0 1 12 0v5M4 18h16v2.5H4zM12 3v2M4.2 6.2l1.4 1.4M19.8 6.2l-1.4 1.4"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.5 4-2 1.5a10 10 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M15.5 12v1.5a2.5 2.5 0 0 0 5 0V12a8.5 8.5 0 1 0-3.4 6.8"/></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="7" rx="5.5" ry="2.5"/><path d="M3.5 7v4c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5V7M9.5 16.5c.8 1.2 2.9 2 5.5 2 3 0 5.5-1.1 5.5-2.5v-4c0-1.2-1.8-2.2-4.3-2.5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c-3 3-3 14 0 17M12 3.5c3 3 3 14 0 17"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5M12 16.4v.1"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <!-- ============ Barre du haut : logo, navigation, recherche ============ -->
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="TheEarth, accueil">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13"/><path d="M3 16h26M16 3c-4.5 4-4.5 22 0 26M16 3c4.5 4 4.5 22 0 26"/></svg>
+      <span class="brand__name">The<em>Earth</em></span>
+    </a>
+    <nav class="mainnav" aria-label="Navigation principale">
+      <a href="#/" data-nav="destinations"><svg class="icon" aria-hidden="true"><use href="#i-compass"/></svg>Destinations</a>
+      <a href="#/hasard" data-nav="random"><svg class="icon" aria-hidden="true"><use href="#i-dice"/></svg>Au hasard</a>
+      <a href="#/avis" data-nav="feedback"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Ton avis</a>
+    </nav>
+    <div class="topbar__search" id="top-search" role="search"></div>
+    <button class="theme-switch" type="button" aria-label="Passer en mode clair"></button>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- Pendant le chargement des pays (et en cas de problème : le message s'affiche ici) -->
+    <div class="loader" id="loader" role="status">
+      <span class="loader__ring" aria-hidden="true"></span>
+      <span class="loader__text">Chargement des pays…</span>
+    </div>
+
+    <!-- ============ Écran 1 : la page d'un pays (remplie par CountryPage) ============ -->
+    <article class="page page--country" data-page="country" hidden></article>
+
+    <!-- ============ Écran 2 : toutes les destinations (l'accueil) (remplie par DestinationsPage) ============ -->
+    <section class="page page--destinations" data-page="destinations" hidden></section>
+
+    <!-- ============ Écran 3 : « Ton avis », le formulaire de suggestions (rempli par FeedbackPage) ============ -->
+    <section class="page page--feedback" data-page="feedback" hidden></section>
+  </main>
+
+  <!-- Navigation du bas sur téléphone : les rubriques du haut, et la recherche à portée de pouce -->
+  <nav class="tabbar" aria-label="Navigation principale">
+    <a href="#/" data-nav="destinations"><svg class="icon" aria-hidden="true"><use href="#i-compass"/></svg><span>Destinations</span></a>
+    <button type="button" class="tabbar__search" data-action="search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>Rechercher</span></button>
+    <a href="#/hasard" data-nav="random"><svg class="icon" aria-hidden="true"><use href="#i-dice"/></svg><span>Au hasard</span></a>
+    <a href="#/avis" data-nav="feedback"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>Ton avis</span></a>
+  </nav>
+
+  <!-- Garde-fou : un petit script "classique" qui tourne même quand les modules JavaScript
+       ne peuvent pas se charger, pour expliquer le problème au lieu d'afficher un chargement sans fin -->
+  <script>
+    (function () {
+      var loader = document.getElementById("loader");
+      var text = loader.querySelector(".loader__text");
+      function fail(message) {
+        loader.classList.add("is-error");
+        text.textContent = message;
+      }
+      // Ouvert par un double-clic : le navigateur bloque les modules et les fichiers de données
+      if (location.protocol === "file:") {
+        fail("Le site doit être ouvert avec un petit serveur local, pas par un double-clic sur index.html. Dans VS Code : clic droit sur index.html, puis « Open with Live Server » (le README donne d’autres façons).");
+        return;
+      }
+      // Toujours en chargement après 25 s : quelque chose bloque
+      setTimeout(function () {
+        if (document.body.classList.contains("is-loading") && !loader.classList.contains("is-error")) {
+          fail("Le chargement prend plus de temps que prévu. Vérifie ta connexion puis recharge la page. Si rien ne change, ouvre la console (F12) pour lire l'erreur.");
+        }
+      }, 25000);
+    })();
+  </script>
+</body>
+</html>
